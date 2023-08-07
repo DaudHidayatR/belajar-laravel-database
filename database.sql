@@ -1,12 +1,13 @@
 show databases;
 create database belajar_laravel_database;
 use belajar_laravel_database;
-
-create table catagories(
+use testing;
+drop table categories;
+create table categories(
     id varchar(100) not null primary key,
     name varchar(100) not null,
     description text,
     created_at timestamp default current_timestamp
 )engine innodb;
-desc catagories;
+desc categories;
 
