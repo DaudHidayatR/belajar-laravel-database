@@ -188,6 +188,13 @@ class QueryBuilderTest extends TestCase
             'category_id' => 'SMARTPHONE',
             'price' => 15000000,
         ]);
+        DB::table('products')->insert([
+            'id' => '4',
+            'name' => 'Macbook Pro 2020',
+            'description' => 'Macbook Pro 2020',
+            'category_id' => 'LAPTOP',
+            'price' => 25000000,
+        ]);
     }
     public function testJoin(){
         $this->insertProducts();
@@ -209,6 +216,18 @@ class QueryBuilderTest extends TestCase
             ->orderBy('categories.name','desc')
             ->get();
         self::assertCount(3,$collection);
+        $collection->each(function ($item){
+            Log::info(json_encode($item));
+        });
+
+    }
+    public function testPanging(){
+        $this->insertCategories();
+        $collection = DB::table('categories')
+            ->skip(2)
+            ->take(2)
+            ->get();
+        self::assertCount(2,$collection);
         $collection->each(function ($item){
             Log::info(json_encode($item));
         });
