@@ -32,6 +32,7 @@ create table products
 desc products;
 
 select * from products;
+select * from categories;
 delete  from categories;
 delete  from products;
 

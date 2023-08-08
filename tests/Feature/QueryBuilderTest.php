@@ -200,4 +200,17 @@ class QueryBuilderTest extends TestCase
             Log::info(json_encode($item));
         });
     }
+    public function testOrdering(){
+        $this->insertProducts();
+        $collection = DB::table('products')
+            ->join('categories','categories.id','=','products.category_id')
+            ->select('products.id','products.name','categories.name as category_name', 'products.price')
+            ->orderBy('products.price','desc')
+            ->orderBy('categories.name','desc')
+            ->get();
+        self::assertCount(3,$collection);
+        $collection->each(function ($item){
+            Log::info(json_encode($item));
+        });
+    }
 }
