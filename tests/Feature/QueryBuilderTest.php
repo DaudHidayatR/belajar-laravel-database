@@ -232,4 +232,25 @@ class QueryBuilderTest extends TestCase
             Log::info(json_encode($item));
         });
     }
+    public function insertManyCategories(){
+        for ($i=0;$i<100;$i++){
+            DB::table('categories')->insert([
+                "id" => "SMARTPHONE".$i,
+                "name" => "Smartphone".$i,
+                "description" => "Smartphone Category".$i,
+                "created_at" => "2020-10-10 10:10:10"
+            ]);
+        }
+    }
+    public function testChunk(){
+        $this->insertManyCategories();
+        DB::table('categories')->orderBy('id')->chunk(10,function ($collection){
+            self::assertCount(10,$collection);
+            self::assertNotNull($collection);
+            $collection->each(function ($item){
+                Log::info(json_encode($item));
+            });
+        });
+    }
+
 }
