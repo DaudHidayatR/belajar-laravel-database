@@ -18,3 +18,20 @@ create table counter(
 insert into counter(id, counter) values('sample', 0);
 
 select * from counter;
+
+create table products
+(
+    id varchar(100) not null primary key,
+    name varchar(100) not null,
+    description text null ,
+    price int not null ,
+    category_id varchar(100) not null,
+    created_at timestamp not null default current_timestamp,
+    constraint products_categories_id_fk foreign key (category_id) references categories (id)
+)engine innodb;
+desc products;
+
+select * from products;
+delete  from categories;
+delete  from products;
+
