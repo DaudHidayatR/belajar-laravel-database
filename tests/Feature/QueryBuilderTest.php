@@ -202,7 +202,7 @@ class QueryBuilderTest extends TestCase
             ->join('categories','categories.id','=','products.category_id')
             ->select('products.id','categories.name as category_name', 'products.price')
             ->get();
-        self::assertCount(3,$collection);
+        self::assertCount(4,$collection);
         $collection->each(function ($item){
             Log::info(json_encode($item));
         });
@@ -215,7 +215,7 @@ class QueryBuilderTest extends TestCase
             ->orderBy('products.price','desc')
             ->orderBy('categories.name','desc')
             ->get();
-        self::assertCount(3,$collection);
+        self::assertCount(4,$collection);
         $collection->each(function ($item){
             Log::info(json_encode($item));
         });
@@ -250,6 +250,15 @@ class QueryBuilderTest extends TestCase
             $collection->each(function ($item){
                 Log::info(json_encode($item));
             });
+        });
+    }
+    public function testLazy()
+    {
+        $this->insertManyCategories();
+        $collection = DB::table('categories')->orderBy('id')->lazy(10)->take(3);
+        self::assertNotNull($collection);
+        $collection->each(function ($item){
+            Log::info(json_encode($item));
         });
     }
 

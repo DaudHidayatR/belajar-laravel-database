@@ -2,6 +2,7 @@ show databases;
 create database belajar_laravel_database;
 use belajar_laravel_database;
 use testing;
+show tables;
 drop table categories;
 create table categories(
     id varchar(100) not null primary key,
