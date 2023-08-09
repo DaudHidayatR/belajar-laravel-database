@@ -270,5 +270,19 @@ class QueryBuilderTest extends TestCase
             Log::info(json_encode($item));
         });
     }
-
+    public function testAggregate(){
+        $this->insertProducts();
+        $collection = DB::table('products')
+            ->count('id');
+        self::assertEquals(4,$collection);
+        $collection = DB::table('products')
+            ->min('price');
+        self::assertEquals(12000000,$collection);
+        $collection = DB::table('products')
+            ->max('price');
+        self::assertEquals(25000000,$collection);
+        $collection = DB::table('products')
+            ->sum('price');
+        self::assertEquals(66000000,$collection);
+    }
 }
