@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Illuminate\Database\Query\Builder;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\DB;
@@ -299,5 +300,46 @@ class QueryBuilderTest extends TestCase
         self::assertEquals(12000000,$collection[0]->min_price);
         self::assertEquals(25000000,$collection[0]->max_price);
 
+    }
+    public function insertProductFood(){
+        DB::table('products')->insert([
+            'id' => '5',
+            'name' => 'bakso',
+            'category_id' => 'FOOD',
+            'price' => 12000,
+        ]);
+        DB::table('products')->insert([
+            'id' => '6',
+            'name' => 'Mie Ayam',
+            'category_id' => 'FOOD',
+            'price' => 15000,
+        ]);
+    }
+    public function testGrupBy()
+    {
+        $this->insertProducts();
+        $this->insertProductFood();
+        $collection = DB::table('products')
+            ->select('category_id',DB::raw('count(id) as total'))
+            ->groupBy('category_id')
+            ->get();
+        self::assertCount(3,$collection);
+        $collection->each(function ($item){
+            Log::info(json_encode($item));
+        });
+    }
+    public function testGrupByHaving()
+    {
+        $this->insertProducts();
+        $this->insertProductFood();
+        $collection = DB::table('products')
+            ->select('category_id',DB::raw('count(id) as total'))
+            ->groupBy('category_id')
+            ->having(DB::raw('count(id)'),'>',2)
+            ->get();
+        self::assertCount(1,$collection);
+        $collection->each(function ($item){
+            Log::info(json_encode($item));
+        });
     }
 }
