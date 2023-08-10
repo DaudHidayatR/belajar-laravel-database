@@ -342,4 +342,18 @@ class QueryBuilderTest extends TestCase
             Log::info(json_encode($item));
         });
     }
+    public function testLocking()
+    {
+        $this->insertProducts();
+        DB::transaction(function (){
+            $collection = DB::table('products')
+                ->where('id','1')
+                ->lockForUpdate()
+                ->get();
+            self::assertCount(1,$collection);
+            $collection->each(function ($item){
+                Log::info(json_encode($item));
+            });
+        });
+    }
 }
