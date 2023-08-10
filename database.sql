@@ -36,4 +36,7 @@ select * from products;
 select * from categories;
 delete  from categories;
 delete  from products;
-
+show tables;
+drop table categories;
+drop table products;
+drop table counter;
